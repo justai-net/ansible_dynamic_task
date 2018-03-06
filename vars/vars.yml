@@ -1,4 +1,15 @@
 ---
+vcenter_hostname: 192.168.30.5
+vcenter_user: administrator@vsphere.local
+vcenter_pass: vagrant
+vmtemplate: Centos7
+new_port: 22
+inventory_dir: /Users/adam/Documents/devops/ansible/vmware_guest/inventory
+ansible_ssh_user: vagrant
+ansible_ssh_pass: vagrant
+ansible_become_user: root
+ansible_become_pass: vagrant
+ansible_ssh_extra_args: '-o StrictHostKeyChecking=no'
 nodes:
 - name: justai-web01
   os: Centos7
@@ -21,24 +32,19 @@ nodes:
   - size_gb: 30
     type: thin
     datastore: datastore2
-  vgs:
-    vg_data:
-    - /dev/sdb
-  lvol:
-    lv_pgsql:
-      size: 30000
-      vg: vg_data
-    lv_var_log:
-      size: 20000
-      vg: vg_data
-  mounts:
-    sdb:
-    - /var/lib
   hardware:
     memory_mb: 1024
     num_cpus: 2
     scsi: paravirtual
-    
+  lvg:
+  - name: vg_data
+    pvs: /dev/sdb
+  lvol:
+  - name: lv_django
+    size: 30000
+    vg: vg_data
+    mount: /opt/django
+
 - name: justai-db01
   os: Centos7
   services:
@@ -63,3 +69,11 @@ nodes:
     memory_mb: 1024
     num_cpus: 2
     scsi: paravirtual
+  lvg:
+  - name: vg_data
+    pvs: /dev/sdb
+  lvol:
+  - name: lv_pgsql
+    size: 30000
+    vg: vg_data
+    mount: /var/lib

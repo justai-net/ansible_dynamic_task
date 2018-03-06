@@ -1,42 +1,4 @@
 ---
-- name: Building {{ item.name }}
-  vmware_guest:
-    hostname: "{{ '{{ vcenter_hostname }}' }}"
-    username: "{{ '{{ vcenter_user }}' }}"
-    password: "{{ '{{ vcenter_pass }}' }}"
-    datacenter: justai-lab
-    cluster: cluster
-    validate_certs: no
-    state: poweredon
-    name: {{ item.name }}
-    template: {{ item.os }}
-    disk:
-{% for items in item.harddrive %}
-    - size_gb: {{ items.size_gb }}
-      type: {{ items.type }}
-      datastore: {{ items.datastore }}
-{% endfor %}
-    networks:
-{% for nic in item.network %}
-{% if nic.type == 'static' %}
-    - name: {{ nic.name }}
-      type: {{ nic.type }}
-      ip: {{ nic.ip }}
-      netmask: {{ nic.netmask }}
-      gateway: {{ nic.gateway }}
-{% else %}
-    - name: {{ nic.name }}
-      type: {{ nic.type }}
-{% endif %}
-{% endfor %}
-    hardware:
-      memory_mb: {{item.hardware.memory_mb }}
-      num_cpus: {{ item.hardware.num_cpus }}
-      scsi: paravirtual
-  delegate_to: localhost
-  register: deploy
-  when: uuid|failed
-
 - name: Ensure SCM code master - {{ item.name }}
   vmware_guest:
     hostname: "{{ '{{ vcenter_hostname }}' }}"
@@ -71,4 +33,5 @@
       memory_mb: {{item.hardware.memory_mb }}
       num_cpus: {{ item.hardware.num_cpus }}
       scsi: paravirtual
+    wait_for_ip_address: yes
   delegate_to: localhost

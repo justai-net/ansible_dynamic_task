@@ -5,6 +5,15 @@
   - vars/vars.yml
 
   tasks:
+  - name: Gather Facts of all VMs in Virtual Center or ESXi.
+    local_action:
+      module: vmware_vm_facts
+      hostname: "{{ vcenter_hostname }}"
+      username: "{{ vcenter_user }}"
+      password: "{{ vcenter_pass }}"
+      validate_certs: False
+    register: facts
+
   - name: Generate build tasks for virtual machines
     template:
       src: templates/task_template.j2
