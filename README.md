@@ -36,7 +36,7 @@ templates/task_template.2
 
 ### Will output
 tasks/justai-web01.yml
-```yaml
+``` yaml
 ---
 - name: Building justai-web01
   vmware_guest:
@@ -63,8 +63,11 @@ tasks/justai-web01.yml
       num_cpus: 2
       scsi: paravirtual
 ```
+
 tasks/justai-db01.yml
-```
+
+``` yaml
+---
 - name: Building justai-db01
   vmware_guest:
     validate_certs: no
