@@ -1,6 +1,20 @@
 # Generate a vmware_guest module task using a Jinja2 template.
+Running the playbook, 
+``` yaml
+---
+- hosts: localhost
+  gather_facts: no
+  vars_files:
+  - vars/vars.yml
 
-
+  tasks:
+  - name: Generate build tasks for virtual machines
+    template:
+      src: templates/task_template.j2
+      dest: './tasks/{{ item.name }}.yml'
+    with_items:
+    - "{{ nodes }}"
+```
 templates/task_template.j2
 ```yaml
 ---
