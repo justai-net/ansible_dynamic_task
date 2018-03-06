@@ -1,0 +1,65 @@
+---
+nodes:
+- name: justai-web01
+  os: Centos7
+  services:
+    - nginx
+    - django
+    - motd
+  network:
+  - name: BridgedNetwork
+    type: dhcp
+  - name: VM Network
+    type: static
+    ip: 192.168.30.111
+    netmask: 255.255.255.0
+    gateway: 192.168.30.1
+  harddrive:
+  - size_gb: 50
+    type: thin
+    datastore: datastore2
+  - size_gb: 30
+    type: thin
+    datastore: datastore2
+  vgs:
+    vg_data:
+    - /dev/sdb
+  lvol:
+    lv_pgsql:
+      size: 30000
+      vg: vg_data
+    lv_var_log:
+      size: 20000
+      vg: vg_data
+  mounts:
+    sdb:
+    - /var/lib
+  hardware:
+    memory_mb: 1024
+    num_cpus: 2
+    scsi: paravirtual
+    
+- name: justai-db01
+  os: Centos7
+  services:
+  - postgres
+  - motd
+  network:
+  - name: BridgedNetwork
+    type: dhcp
+  - name: VM Network
+    type: static
+    ip: 192.168.30.112
+    netmask: 255.255.255.0
+    gateway: 192.168.30.1
+  harddrive:
+  - size_gb: 50
+    type: thin
+    datastore: datastore2
+  - size_gb: 30
+    type: thin
+    datastore: datastore2
+  hardware:
+    memory_mb: 1024
+    num_cpus: 2
+    scsi: paravirtual
