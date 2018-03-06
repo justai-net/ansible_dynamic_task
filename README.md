@@ -1,4 +1,4 @@
-# Generate a VMware guest module task using a Jinja2 template.
+# Generate a vmware_guest module task using a Jinja2 template.
 
 
 templates/task_template.j2
