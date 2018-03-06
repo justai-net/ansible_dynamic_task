@@ -1,7 +1,7 @@
 # Generate a VMware guest module task using a Jinja2 template.
 
 
-templates/task_template.2
+templates/task_template.j2
 ```yaml
 ---
 - name: Building {{ item.name }}
